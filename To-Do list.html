@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do with LocalStorage</title>
+  <style>
+  body {
+    font-family: Arial;
+    padding:20px;
+    background: linear-gradient(to left, #a8edea, #fed6e3);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+
+  }
+  h2 {
+    font-size:25px;
+    padding-right: 10px;
+   
+  }
+
+  input {
+    padding:15px;
+    font-size: 16px;
+    width:40%;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    margin: 10px;
+  }
+
+  button {
+    padding:15px;
+    font-size: 16px;
+    margin-left: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    margin: 10px;
+  }
+
+  
+  li {
+    font-size: 18px;     /* ✅ task text bada */
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  li button {
+    font-size:10px;     /*  ❌ icon chhota */
+    padding: 5px 8px;
+    background: rgb(214, 202, 202);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+   
+</head>
+<body>
+  <h2> Persistent To-Do List </h2>
+  <input id="taskInput" type="text" placeholder="Enter a task">
+  <button onclick="addTask()">Add</button>
+  <ul id="taskList"></ul>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.textContent = task.text;
+        if (task.done) li.classList.add('done');
+
+        li.addEventListener('click', () => {
+          tasks[index].done = !tasks[index].done;
+          saveTasks();
+          renderTasks();
+        });
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent =  '❌';
+        delBtn.onclick = () => {
+          tasks.splice(index, 1);
+          saveTasks();
+          renderTasks();
+        };
+
+        li.appendChild(delBtn);
+        taskList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const text = taskInput.value.trim();
+      if (text === '') return;
+      tasks.push({ text, done: false });
+      saveTasks();
+      renderTasks();
+      taskInput.value = '';
+    }
+
+    renderTasks();
+  </script>
+</body>
+</html>

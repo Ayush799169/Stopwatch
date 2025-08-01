@@ -1,0 +1,27 @@
+ @media screen and (max-width: 720px) {
+      .container {
+        padding: 15px;
+        margin: 10px;
+      }
+      #question {
+        font-size: 18px;
+      }
+      .option-btn {
+        font-size: 15px;
+        padding: 8px;
+      }
+      #next-btn, #reset-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+      }
+      #question-tracker {
+        font-size: 15px;
+        text-align: center;
+      }
+      #score {
+        font-size: 18px;
+        text-align: center;
+        margin-top: 20px;
+      }
+ }
